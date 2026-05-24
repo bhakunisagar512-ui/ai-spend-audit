@@ -66,4 +66,30 @@ describe('runAudit', () => {
     expect(result.totalSavings).toBe(0)
     expect(result.recommendations).toHaveLength(0)
   })
+
+  test('detects Cursor Teams overpay for two seats', () => {
+    const result = runAudit([
+      {
+        name: 'cursor',
+        currentTier: 'teams',
+        seats: 2,
+        monthlyTotal: 80,
+      },
+    ])
+
+    expect(result.totalSavings).toBe(40)
+  })
+
+  test('detects v0 Business overpay for small teams', () => {
+    const result = runAudit([
+      {
+        name: 'v0',
+        currentTier: 'business',
+        seats: 3,
+        monthlyTotal: 300,
+      },
+    ])
+
+    expect(result.totalOptimizedSpend).toBe(90)
+  })
 })
