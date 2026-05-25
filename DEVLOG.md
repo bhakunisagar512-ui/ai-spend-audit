@@ -74,6 +74,8 @@
 - Added generated Open Graph images for public audit links
 - Updated Supabase schema with `public_audits`
 - Added business docs: GTM, ECONOMICS, LANDING_COPY, METRICS, and USER_INTERVIEWS template
+- Deployed production app to Vercel: https://ai-spend-audit-sigma-weld.vercel.app
+- Ran Lighthouse on the production URL: Performance 99, Accessibility 100, Best Practices 100
 
 ### Learned
 - Shared reports should avoid company name and email by design, not by UI convention
@@ -85,6 +87,5 @@
 - Real user interview quotes are still pending and should not be invented
 
 ### Plan
-- Deploy production build to Vercel
-- Run Lighthouse on the deployed app
+- Rerun Supabase schema in the dashboard so public share links can persist
 - Finish remaining Day 4 docs and final submission checklist
