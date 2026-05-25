@@ -368,39 +368,54 @@ export default function AuditForm() {
                   <h3 className="mb-4 font-semibold">{tool.label}</h3>
 
                   <div className="grid gap-3 sm:grid-cols-3">
-                    <select
-                      value={form.toolCosts[tool.id]?.currentTier || getDefaultTier(tool.id)}
-                      onChange={(event) =>
-                        updateToolCost(tool.id, { currentTier: event.target.value })
-                      }
-                      className="w-full rounded-lg border bg-white p-3"
-                    >
-                      {tool.tiers.map((tier) => (
-                        <option key={tier.value} value={tier.value}>
-                          {tier.label}
-                        </option>
-                      ))}
-                    </select>
+                    <label className="block">
+                      <span className="mb-1 block text-sm font-medium text-gray-700">Plan</span>
+                      <select
+                        value={form.toolCosts[tool.id]?.currentTier || getDefaultTier(tool.id)}
+                        onChange={(event) =>
+                          updateToolCost(tool.id, { currentTier: event.target.value })
+                        }
+                        className="w-full rounded-lg border bg-white p-3"
+                      >
+                        {tool.tiers.map((tier) => (
+                          <option key={tier.value} value={tier.value}>
+                            {tier.label}
+                          </option>
+                        ))}
+                      </select>
+                    </label>
 
-                    <input
-                      type="number"
-                      min="0"
-                      placeholder="Monthly Cost ($)"
-                      value={form.toolCosts[tool.id]?.monthlyCost || ""}
-                      onChange={(event) =>
-                        updateToolCost(tool.id, { monthlyCost: event.target.value })
-                      }
-                      className="w-full rounded-lg border p-3"
-                    />
+                    <label className="block">
+                      <span className="mb-1 block text-sm font-medium text-gray-700">
+                        Total monthly spend ($)
+                      </span>
+                      <input
+                        type="number"
+                        min="0"
+                        placeholder="1500"
+                        value={form.toolCosts[tool.id]?.monthlyCost || ""}
+                        onChange={(event) =>
+                          updateToolCost(tool.id, { monthlyCost: event.target.value })
+                        }
+                        className="w-full rounded-lg border p-3"
+                      />
+                    </label>
 
-                    <input
-                      type="number"
-                      min="1"
-                      placeholder="Seats"
-                      value={form.toolCosts[tool.id]?.seats || ""}
-                      onChange={(event) => updateToolCost(tool.id, { seats: event.target.value })}
-                      className="w-full rounded-lg border p-3"
-                    />
+                    <label className="block">
+                      <span className="mb-1 block text-sm font-medium text-gray-700">
+                        Seats using this tool
+                      </span>
+                      <input
+                        type="number"
+                        min="1"
+                        placeholder="5"
+                        value={form.toolCosts[tool.id]?.seats || ""}
+                        onChange={(event) =>
+                          updateToolCost(tool.id, { seats: event.target.value })
+                        }
+                        className="w-full rounded-lg border p-3"
+                      />
+                    </label>
                   </div>
                 </div>
               );

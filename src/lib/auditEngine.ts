@@ -31,7 +31,7 @@ export type AuditResult = {
 export const PRICING: Record<ToolName, Record<string, number>> = {
   chatgpt: { plus: 20, business: 25 },
   claude: { pro: 20, team: 30 },
-  copilot: { pro: 10, business: 19, proPlus: 39 },
+  copilot: { pro: 10, business: 19, proplus: 39 },
   cursor: { pro: 20, teams: 40 },
   gemini: { pro: 20, ultra: 100 },
   windsurf: { pro: 15, teams: 30, enterprise: 60 },
@@ -75,32 +75,39 @@ export function runAudit(tools: Tool[]): AuditResult {
 
 function getOptimizedCost(tool: Tool): number {
   const normalizedTier = normalizeTier(tool.currentTier)
+  const publicPlanCost = getPublicPlanCost(tool)
+  const possibleCosts = [tool.monthlyTotal]
 
   if (tool.name === "copilot" && normalizedTier === "business" && tool.seats <= 2) {
-    return PRICING.copilot.pro * tool.seats
+    possibleCosts.push(PRICING.copilot.pro * tool.seats)
   }
 
   if (tool.name === "cursor" && normalizedTier === "teams" && tool.seats <= 2) {
-    return PRICING.cursor.pro * tool.seats
+    possibleCosts.push(PRICING.cursor.pro * tool.seats)
   }
 
   if (tool.name === "claude" && normalizedTier === "team" && tool.seats < 5) {
-    return PRICING.claude.pro * tool.seats
+    possibleCosts.push(PRICING.claude.pro * tool.seats)
   }
 
   if (tool.name === "chatgpt" && normalizedTier === "business" && tool.seats < 2) {
-    return PRICING.chatgpt.plus * tool.seats
+    possibleCosts.push(PRICING.chatgpt.plus * tool.seats)
   }
 
   if (tool.name === "v0" && normalizedTier === "business" && tool.seats <= 3) {
-    return PRICING.v0.team * tool.seats
+    possibleCosts.push(PRICING.v0.team * tool.seats)
   }
 
-  return tool.monthlyTotal
+  if (publicPlanCost !== null) {
+    possibleCosts.push(publicPlanCost)
+  }
+
+  return Math.min(...possibleCosts)
 }
 
 function getSuggestion(tool: Tool): string {
   const normalizedTier = normalizeTier(tool.currentTier)
+  const publicPlanCost = getPublicPlanCost(tool)
 
   if (tool.name === "copilot" && normalizedTier === "business" && tool.seats <= 2) {
     return "Switch small teams to Copilot Pro until organization controls are needed."
@@ -122,9 +129,25 @@ function getSuggestion(tool: Tool): string {
     return "Use v0 Team until the business security package is worth the premium."
   }
 
+  if (publicPlanCost !== null && tool.monthlyTotal > publicPlanCost) {
+    return `Entered spend is above the public ${tool.currentTier} price for ${tool.seats} seat${
+      tool.seats === 1 ? "" : "s"
+    }. Check billing, inactive seats, add-ons, or duplicate charges.`
+  }
+
   return "Review usage and downgrade seats or tiers that are not actively used."
 }
 
 function normalizeTier(tier: string): string {
   return tier.trim().toLowerCase()
+}
+
+function getPublicPlanCost(tool: Tool): number | null {
+  const tierPrice = PRICING[tool.name][normalizeTier(tool.currentTier)]
+
+  if (!tierPrice || tool.seats <= 0) {
+    return null
+  }
+
+  return tierPrice * tool.seats
 }

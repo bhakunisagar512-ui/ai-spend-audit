@@ -92,4 +92,18 @@ describe('runAudit', () => {
 
     expect(result.totalOptimizedSpend).toBe(90)
   })
+
+  test('detects spend above public tier pricing', () => {
+    const result = runAudit([
+      {
+        name: 'cursor',
+        currentTier: 'pro',
+        seats: 5,
+        monthlyTotal: 1500,
+      },
+    ])
+
+    expect(result.totalOptimizedSpend).toBe(100)
+    expect(result.totalSavings).toBe(1400)
+  })
 })
