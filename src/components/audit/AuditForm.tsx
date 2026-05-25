@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import { ArrowLeft, Check, Mail, Sparkles } from "lucide-react";
+import { ArrowLeft, Check, Copy, Mail, Share2, Sparkles } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import { runAudit, type AuditResult, type Tool, type ToolName } from "@/lib/auditEngine";
@@ -112,6 +112,9 @@ export default function AuditForm() {
   const [summaryStatus, setSummaryStatus] = useState<"idle" | "loading" | "done">("idle");
   const [leadStatus, setLeadStatus] = useState<"idle" | "loading" | "saved" | "error">("idle");
   const [leadMessage, setLeadMessage] = useState("");
+  const [shareStatus, setShareStatus] = useState<"idle" | "loading" | "ready" | "error">("idle");
+  const [shareLink, setShareLink] = useState("");
+  const [shareMessage, setShareMessage] = useState("");
   const [website, setWebsite] = useState("");
 
   useEffect(() => {
@@ -241,6 +244,32 @@ export default function AuditForm() {
     } else {
       setLeadStatus("error");
       setLeadMessage(data.message || "Could not save your audit. Try again in a minute.");
+    }
+  }
+
+  async function createShareLink() {
+    setShareStatus("loading");
+    setShareMessage("");
+
+    const response = await fetch("/api/share", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        tools: auditTools,
+        result: auditResult,
+      }),
+    });
+
+    const data = (await response.json()) as { url?: string; message?: string };
+
+    if (response.ok && data.url) {
+      setShareStatus("ready");
+      setShareLink(data.url);
+      setShareMessage("Share link created without company name or email.");
+      await navigator.clipboard?.writeText(data.url);
+    } else {
+      setShareStatus("error");
+      setShareMessage(data.message || "Could not create share link.");
     }
   }
 
@@ -402,9 +431,13 @@ export default function AuditForm() {
           website={website}
           leadStatus={leadStatus}
           leadMessage={leadMessage}
+          shareStatus={shareStatus}
+          shareLink={shareLink}
+          shareMessage={shareMessage}
           setEmail={(email) => updateForm({ email })}
           setWebsite={setWebsite}
           saveLead={saveLead}
+          createShareLink={createShareLink}
           back={() => updateForm({ step: 3 })}
         />
       )}
@@ -423,9 +456,13 @@ function ResultsView({
   website,
   leadStatus,
   leadMessage,
+  shareStatus,
+  shareLink,
+  shareMessage,
   setEmail,
   setWebsite,
   saveLead,
+  createShareLink,
   back,
 }: {
   form: FormState;
@@ -438,9 +475,13 @@ function ResultsView({
   website: string;
   leadStatus: "idle" | "loading" | "saved" | "error";
   leadMessage: string;
+  shareStatus: "idle" | "loading" | "ready" | "error";
+  shareLink: string;
+  shareMessage: string;
   setEmail: (email: string) => void;
   setWebsite: (website: string) => void;
   saveLead: () => void;
+  createShareLink: () => void;
   back: () => void;
 }) {
   return (
@@ -519,6 +560,37 @@ function ResultsView({
         <p className="text-sm leading-6 text-gray-700">
           {summaryStatus === "loading" ? "Generating summary..." : summary}
         </p>
+      </div>
+
+      <div className="mb-6 rounded-lg border p-4">
+        <h3 className="mb-3 font-semibold">Share This Audit</h3>
+        <div className="flex flex-col gap-3 sm:flex-row">
+          <input
+            type="text"
+            readOnly
+            value={shareLink}
+            placeholder="Create a public share link"
+            className="min-w-0 flex-1 rounded-lg border p-3 text-sm"
+          />
+          <Button
+            type="button"
+            size="lg"
+            onClick={createShareLink}
+            disabled={shareStatus === "loading"}
+          >
+            {shareStatus === "ready" ? <Copy /> : <Share2 />}
+            {shareStatus === "loading" ? "Creating..." : "Share"}
+          </Button>
+        </div>
+        {shareMessage && (
+          <p
+            className={`mt-3 text-sm ${
+              shareStatus === "error" ? "text-red-600" : "text-gray-600"
+            }`}
+          >
+            {shareMessage}
+          </p>
+        )}
       </div>
 
       <div className="rounded-lg border p-4">

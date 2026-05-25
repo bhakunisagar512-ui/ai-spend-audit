@@ -61,3 +61,30 @@
 - Add shareable audit URLs
 - Add Open Graph metadata for public audit pages
 - Run Lighthouse and write the business docs
+
+## Day 3 - 2026-05-25
+
+**Hours:** 8
+
+### What I did
+- Added privacy-safe public audit sharing
+- Created `/api/share` to store anonymized savings snapshots
+- Added `/audits/[id]` public report pages
+- Added Open Graph and Twitter metadata for shared audit pages
+- Added generated Open Graph images for public audit links
+- Updated Supabase schema with `public_audits`
+- Added business docs: GTM, ECONOMICS, LANDING_COPY, METRICS, and USER_INTERVIEWS template
+
+### Learned
+- Shared reports should avoid company name and email by design, not by UI convention
+- Next.js dynamic route params are async in this version
+- Metadata should be generated through the Metadata API, not manual head tags
+
+### Blockers
+- The new `public_audits` SQL needs to be run in Supabase before share links work in production
+- Real user interview quotes are still pending and should not be invented
+
+### Plan
+- Deploy production build to Vercel
+- Run Lighthouse on the deployed app
+- Finish remaining Day 4 docs and final submission checklist
