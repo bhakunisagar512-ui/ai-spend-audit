@@ -1,60 +1,31 @@
 # Economics
 
-## Revenue Model
+This tool is valuable if it creates qualified Credex conversations from founders already paying retail for AI tools or API usage.
 
-AI Spend Audit is a free diagnostic tool that creates qualified leads for paid AI tooling reviews.
+Assume 1,000 monthly visitors from founder/developer channels. If 35% complete the audit, that is 350 audits. If 30% leave email after seeing results, that is 105 leads. If 20% of completed audits show more than $500/month in savings, that is 70 high-savings audits. If 25% of those book a Credex conversation, that is 17 consultations.
 
-Potential offers:
-- Free audit: self-serve lead capture
-- Fixed consultation: $500-$1,500 per company
-- Ongoing savings monitoring: $99-$299/month
-- Larger procurement review: 10%-20% of first-year savings
+Credex lead value depends on credit purchase size. A small startup buying discounted AI credits might purchase $10k-$50k/year. If Credex earns a 10%-20% spread or fee, one converted customer could be worth $1k-$10k gross profit. I would model a conservative converted lead value at $2,500.
 
-## Lead Value
+Channel CAC with $0 paid budget is mostly labor:
+- Founder DMs: 2 hours for 20 targeted messages, maybe 2 audits, CAC near $0 cash but high time cost.
+- Community teardown posts: 3 hours to write one strong post, maybe 50-150 audits if it lands.
+- Referral asks: 10 minutes per user, best CAC because trust transfers.
+- Product Hunt/HN launch: low cash cost, unpredictable volume, high preparation cost.
 
-Assumptions:
-- 100 audits/month
-- 25% email capture rate
-- 20% qualified lead rate
-- 20% close rate on qualified leads
-- $1,000 average first consultation
-
-Math:
-- 100 audits -> 25 emails
-- 25 emails -> 5 qualified leads
-- 5 qualified leads -> 1 customer
-- 1 customer -> $1,000 revenue
-
-Estimated value per audit:
+Profitability math:
 
 ```text
-$1,000 / 100 audits = $10 per audit
+350 completed audits
+70 high-savings audits
+17 consultations at 25%
+4 credit purchases at 25%
+4 * $2,500 gross profit = $10,000
 ```
 
-## Customer Value
+For $1M ARR in 18 months, Credex would need either recurring monitoring revenue or enough credit purchase volume. At $2,500 gross profit per converted customer, $1M/year requires 400 converted customers/year, or about 34/month. If audit-to-purchase conversion is 1%, the tool needs 3,400 completed audits/month. If conversion improves to 3% through stronger qualification and Credex follow-up, it needs about 1,134 completed audits/month.
 
-If a customer saves $500/month:
-
-```text
-$500 * 12 = $6,000 annual savings
-```
-
-A $1,000 consultation is easy to justify if it finds at least two months of savings.
-
-## Path To $1M ARR
-
-Recurring monitoring path:
-
-```text
-$1,000,000 ARR / 12 = $83,333 MRR
-$83,333 / $199 average monthly account = 419 customers
-```
-
-Hybrid consulting + monitoring path:
-- 50 consultations/month at $1,000 = $50,000 MRR equivalent
-- 170 monitoring customers at $199/month = $33,830 MRR
-- Total = $83,830/month
-
-## Key Constraint
-
-The product must prove savings quickly. If users do not see a credible number in the first session, email capture and consultation conversion will stay weak.
+What must be true:
+- The audit must find credible savings in at least 20% of completed audits.
+- High-savings users must trust the result enough to share email.
+- Credex must respond quickly while the overspend pain is fresh.
+- Discounted credits must apply to vendors users already care about, especially OpenAI, Anthropic, Cursor, and ChatGPT Enterprise.

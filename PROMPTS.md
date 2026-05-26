@@ -15,10 +15,11 @@ Write a roughly 100-word AI subscription spend audit summary for this company.
 
 Company: {{companyName}}
 Team size: {{teamSize}}
+Primary use case: {{primaryUseCase}}
 Tools: {{toolsJson}}
 Audit result: {{auditResultJson}}
 
-Mention total monthly spend, estimated monthly savings, and the most important next action.
+Mention total monthly spend, estimated monthly and annual savings, and the most important next action.
 ```
 
 ### Current Model

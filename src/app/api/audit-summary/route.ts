@@ -44,10 +44,11 @@ export async function POST(request: Request) {
 
 Company: ${payload.companyName || "Unknown"}
 Team size: ${payload.teamSize || "Unknown"}
+Primary use case: ${payload.tools?.[0]?.useCase || "Unknown"}
 Tools: ${JSON.stringify(payload.tools || [])}
 Audit result: ${JSON.stringify(result)}
 
-Mention total monthly spend, estimated monthly savings, and the most important next action.`,
+Mention total monthly spend, estimated monthly and annual savings, and the most important next action.`,
           },
         ],
       }),

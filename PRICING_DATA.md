@@ -14,7 +14,7 @@ Official URL: https://cursor.com/pricing
 |------|---------------|
 | Hobby | Free |
 | Individual Pro | $20 |
-| Teams | $40/user |
+| Business | $40/user |
 | Enterprise | Custom |
 
 Notes:
@@ -30,10 +30,9 @@ Official URL: https://github.com/features/copilot/plans
 | Tier | Monthly Price |
 |------|---------------|
 | Free | $0 |
-| Pro | $10/user |
-| Pro+ | $39/user |
-| Business | Organization pricing, verify before using |
-| Enterprise | Organization pricing, verify before using |
+| Individual / Pro | $10/user |
+| Business | $19/user |
+| Enterprise | $39/user |
 
 Notes:
 - GitHub currently lists Pro at $10/user/month and Pro+ at $39/user/month.
@@ -41,18 +40,18 @@ Notes:
 
 ---
 
-## ChatGPT
+## ChatGPT / OpenAI
 
 Official URL: https://chatgpt.com/pricing/
+API URL: https://openai.com/api/pricing/
 
 | Tier | Monthly Price |
 |------|---------------|
 | Free | $0 |
-| Plus | Verify on live page |
-| Pro | Verify on live page |
-| Business Codex | Usage pricing |
-| Business ChatGPT & Codex | Per user/month, verify on live page |
+| Plus | $20/user |
+| Team | $25/user |
 | Enterprise | Custom |
+| OpenAI API direct | Usage-based |
 
 Notes:
 - The current page distinguishes individual, business, and enterprise plans.
@@ -61,18 +60,21 @@ Notes:
 
 ---
 
-## Claude
+## Claude / Anthropic
 
 Official URLs:
 - https://claude.com/pricing
 - https://support.claude.com/en/articles/9267289-how-is-my-team-plan-bill-calculated
+API URL: https://www.anthropic.com/pricing#api
 
 | Tier | Monthly Price |
 |------|---------------|
-| Pro | Verify on live page |
-| Team Standard | $25/member annual or $30/member monthly |
-| Team Premium | $150/member |
+| Free | $0 |
+| Pro | $20/user |
+| Max | $100/user |
+| Team | $25/member annual or $30/member monthly |
 | Enterprise | Custom |
+| Anthropic API direct | Usage-based |
 
 Notes:
 - Claude's Help Center states prices can vary by region and tax handling.
@@ -90,7 +92,7 @@ Official URL: https://gemini.google/us/subscriptions/
 | Google AI Pro | Verify on live page |
 | Google AI Ultra 5x | $99.99 |
 | Google AI Ultra 20x | $199.99 |
-| Gemini Enterprise | Verify on Google Cloud/Workspace quote |
+| Gemini API | Usage-based |
 
 Notes:
 - Google AI Ultra is listed at $99.99/month for 5x higher limits and $199.99/month for 20x higher limits.

@@ -75,10 +75,11 @@ export default async function PublicAuditPage({ params }: AuditPageProps) {
           </Link>
         </div>
 
-        <div className="mb-6 grid gap-3 sm:grid-cols-3">
+        <div className="mb-6 grid gap-3 sm:grid-cols-4">
           <Metric label="Current Spend" value={formatCurrency(audit.total_current_spend)} />
           <Metric label="Optimized Spend" value={formatCurrency(audit.total_optimized_spend)} />
           <Metric label="Monthly Savings" value={formatCurrency(audit.total_savings)} strong />
+          <Metric label="Annual Savings" value={formatCurrency(audit.total_savings * 12)} strong />
         </div>
 
         <section className="mb-6 rounded-lg border bg-white p-5">
@@ -110,7 +111,8 @@ export default async function PublicAuditPage({ params }: AuditPageProps) {
                       {formatCurrency(recommendation.monthlySavings)}/mo
                     </p>
                   </div>
-                  <p className="text-sm text-gray-600">{recommendation.suggestion}</p>
+                  <p className="text-sm text-gray-700">{recommendation.suggestion}</p>
+                  <p className="mt-1 text-sm text-gray-600">{recommendation.reason}</p>
                 </div>
               ))}
             </div>
@@ -163,6 +165,8 @@ function getToolLabel(tool: ToolName): string {
     gemini: "Gemini",
     windsurf: "Windsurf",
     v0: "v0",
+    anthropicApi: "Anthropic API direct",
+    openaiApi: "OpenAI API direct",
   };
 
   return labels[tool];

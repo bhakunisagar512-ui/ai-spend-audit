@@ -1,36 +1,54 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Spend Audit
 
-## Getting Started
+AI Spend Audit is a free web app for startup founders and engineering managers who want a fast second opinion on AI tooling spend. It collects a team's AI tools, plans, seat counts, use case, and monthly spend, then returns savings estimates, recommended actions, an AI-written summary, lead capture, and a privacy-safe share URL.
 
-First, run the development server:
+Live app: https://ai-spend-audit-sigma-weld.vercel.app
+
+## Demo
+
+Screen recording or screenshots to add before submission:
+- Screenshot 1: landing page and company/use-case step
+- Screenshot 2: tool plan and spend entry
+- Screenshot 3: results page with recommendations and share link
+
+## Quick Start
 
 ```bash
+npm install
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open `http://localhost:3000`.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Required environment variables:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```env
+NEXT_PUBLIC_SUPABASE_URL=
+NEXT_PUBLIC_SUPABASE_ANON_KEY=
+ANTHROPIC_API_KEY=
+RESEND_API_KEY=
+RESEND_FROM_EMAIL=
+NEXT_PUBLIC_APP_URL=
+```
 
-## Learn More
+Run checks:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+npm run lint
+npm test
+npm run build
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Deploy:
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npx vercel --prod
+```
 
-## Deploy on Vercel
+## Decisions
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Rule-based audit math instead of LLM math:** pricing and savings calculations need deterministic, testable reasoning. The LLM is used only for the summary paragraph.
+- **Manual spend entry instead of billing integrations:** this keeps the MVP no-login and fast to try, at the cost of relying on user-entered data.
+- **Email capture after results:** the app gives value before asking for email, matching the lead-gen requirement and improving trust.
+- **Supabase with RLS:** quick real backend, public insert policies, and public read only for anonymized shared audit snapshots.
+- **Privacy-safe sharing:** public URLs strip company name and email by storing a separate `public_audits` record with only tools and savings numbers.

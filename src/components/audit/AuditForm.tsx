@@ -4,7 +4,13 @@ import { useEffect, useMemo, useState } from "react";
 import { ArrowLeft, Check, Copy, Mail, Share2, Sparkles } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
-import { runAudit, type AuditResult, type Tool, type ToolName } from "@/lib/auditEngine";
+import {
+  runAudit,
+  type AuditResult,
+  type Tool,
+  type ToolName,
+  type UseCase,
+} from "@/lib/auditEngine";
 
 type ToolOption = {
   id: ToolName;
@@ -22,6 +28,7 @@ type FormState = {
   step: number;
   companyName: string;
   teamSize: string;
+  primaryUseCase: UseCase | "";
   selectedTools: ToolName[];
   toolCosts: Record<string, ToolCost>;
   email: string;
@@ -36,34 +43,39 @@ const TOOL_OPTIONS: ToolOption[] = [
     label: "ChatGPT",
     tiers: [
       { label: "Plus", value: "plus" },
-      { label: "Business", value: "business" },
+      { label: "Team", value: "team" },
       { label: "Enterprise", value: "enterprise" },
+      { label: "API direct", value: "api" },
     ],
   },
   {
     id: "claude",
     label: "Claude",
     tiers: [
+      { label: "Free", value: "free" },
       { label: "Pro", value: "pro" },
+      { label: "Max", value: "max" },
       { label: "Team", value: "team" },
       { label: "Enterprise", value: "enterprise" },
+      { label: "API direct", value: "api" },
     ],
   },
   {
     id: "copilot",
     label: "GitHub Copilot",
     tiers: [
-      { label: "Pro", value: "pro" },
+      { label: "Individual", value: "individual" },
       { label: "Business", value: "business" },
-      { label: "Pro+", value: "proPlus" },
+      { label: "Enterprise", value: "enterprise" },
     ],
   },
   {
     id: "cursor",
     label: "Cursor",
     tiers: [
+      { label: "Hobby", value: "hobby" },
       { label: "Pro", value: "pro" },
-      { label: "Teams", value: "teams" },
+      { label: "Business", value: "business" },
       { label: "Enterprise", value: "enterprise" },
     ],
   },
@@ -73,7 +85,7 @@ const TOOL_OPTIONS: ToolOption[] = [
     tiers: [
       { label: "Pro", value: "pro" },
       { label: "Ultra", value: "ultra" },
-      { label: "Enterprise", value: "enterprise" },
+      { label: "API", value: "api" },
     ],
   },
   {
@@ -94,12 +106,23 @@ const TOOL_OPTIONS: ToolOption[] = [
       { label: "Enterprise", value: "enterprise" },
     ],
   },
+  {
+    id: "anthropicApi",
+    label: "Anthropic API direct",
+    tiers: [{ label: "API direct", value: "api" }],
+  },
+  {
+    id: "openaiApi",
+    label: "OpenAI API direct",
+    tiers: [{ label: "API direct", value: "api" }],
+  },
 ];
 
 const DEFAULT_STATE: FormState = {
   step: 1,
   companyName: "",
   teamSize: "",
+  primaryUseCase: "",
   selectedTools: [],
   toolCosts: {},
   email: "",
@@ -145,8 +168,9 @@ export default function AuditForm() {
         currentTier: form.toolCosts[tool]?.currentTier || getDefaultTier(tool),
         seats: toNumber(form.toolCosts[tool]?.seats),
         monthlyTotal: toNumber(form.toolCosts[tool]?.monthlyCost),
+        useCase: form.primaryUseCase || undefined,
       })),
-    [form.selectedTools, form.toolCosts]
+    [form.primaryUseCase, form.selectedTools, form.toolCosts]
   );
 
   const auditResult = useMemo(() => runAudit(auditTools), [auditTools]);
@@ -312,11 +336,29 @@ export default function AuditForm() {
             className="mb-4 w-full rounded-lg border p-3"
           />
 
+          <label className="mb-4 block">
+            <span className="mb-1 block text-sm font-medium text-gray-700">Primary use case</span>
+            <select
+              value={form.primaryUseCase}
+              onChange={(event) =>
+                updateForm({ primaryUseCase: event.target.value as UseCase })
+              }
+              className="w-full rounded-lg border bg-white p-3"
+            >
+              <option value="">Select primary use case</option>
+              <option value="coding">Coding</option>
+              <option value="writing">Writing</option>
+              <option value="data">Data</option>
+              <option value="research">Research</option>
+              <option value="mixed">Mixed</option>
+            </select>
+          </label>
+
           <Button
             type="button"
             size="lg"
             onClick={() => updateForm({ step: 2 })}
-            disabled={!form.companyName || !form.teamSize}
+            disabled={!form.companyName || !form.teamSize || !form.primaryUseCase}
           >
             Continue
           </Button>
@@ -512,10 +554,11 @@ function ResultsView({
         </Button>
       </div>
 
-      <div className="mb-6 grid gap-3 sm:grid-cols-3">
+      <div className="mb-6 grid gap-3 sm:grid-cols-4">
         <Metric label="Current Spend" value={formatCurrency(auditResult.totalCurrentSpend)} />
         <Metric label="Optimized Spend" value={formatCurrency(auditResult.totalOptimizedSpend)} />
         <Metric label="Monthly Savings" value={formatCurrency(auditResult.totalSavings)} strong />
+        <Metric label="Annual Savings" value={formatCurrency(auditResult.totalAnnualSavings)} strong />
       </div>
 
       {needsConsultation && (
@@ -525,11 +568,27 @@ function ResultsView({
             <div>
               <h3 className="font-semibold text-emerald-950">Credex consultation recommended</h3>
               <p className="text-sm text-emerald-800">
-                Your estimated savings are above $500/month. This is large enough to justify a
-                deeper vendor and seat audit.
+                Your estimated savings are above $500/month. Credex can help capture more of that
+                savings through discounted AI infrastructure credits and a deeper vendor review.
               </p>
+              <a
+                href="mailto:hello@credex.ai?subject=AI%20Spend%20Audit%20consultation"
+                className="mt-3 inline-flex h-9 items-center rounded-lg bg-emerald-900 px-4 text-sm font-medium text-white"
+              >
+                Book Credex consultation
+              </a>
             </div>
           </div>
+        </div>
+      )}
+
+      {auditResult.totalSavings < 100 && (
+        <div className="mb-6 rounded-lg border border-zinc-200 bg-zinc-50 p-4">
+          <h3 className="font-semibold">You&apos;re spending well</h3>
+          <p className="text-sm text-gray-600">
+            The current rules found less than $100/month in savings. Keep the report and get
+            notified when new optimizations apply to your stack.
+          </p>
         </div>
       )}
 
@@ -559,7 +618,12 @@ function ResultsView({
                     {formatCurrency(recommendation.monthlySavings)}/mo
                   </p>
                 </div>
-                <p className="text-gray-600">{recommendation.suggestion}</p>
+                <p className="text-gray-700">{recommendation.suggestion}</p>
+                <p className="mt-1 text-gray-600">{recommendation.reason}</p>
+                <p className="mt-1 text-gray-500">
+                  Recommended spend: {formatCurrency(recommendation.optimizedSpend)}. Annual
+                  savings: {formatCurrency(recommendation.annualSavings)}.
+                </p>
               </div>
             ))}
           </div>
