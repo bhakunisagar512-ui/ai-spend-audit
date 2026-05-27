@@ -6,10 +6,25 @@ Live app: https://ai-spend-audit-sigma-weld.vercel.app
 
 ## Demo
 
-Screen recording or screenshots to add before submission:
-- Screenshot 1: landing page and company/use-case step
-- Screenshot 2: tool plan and spend entry
-- Screenshot 3: results page with recommendations and share link
+### Tool spend details
+
+![Tool spend details](public/screenshots/tool-spend-input.png)
+
+### Main audit result
+
+![Main audit result with Credex CTA](public/screenshots/audit-results-hero.png)
+
+### Recommendations and AI summary
+
+![Recommendations and AI summary](public/screenshots/recommendations-summary.png)
+
+### Share link created
+
+![Share link created](public/screenshots/share-link-created.png)
+
+### Public shared report
+
+![Public shared report](public/screenshots/public-share-report.png)
 
 ## Quick Start
 
