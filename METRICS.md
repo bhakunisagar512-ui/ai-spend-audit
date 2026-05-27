@@ -4,24 +4,20 @@
 
 Verified monthly savings discovered.
 
-This measures the outcome users care about, not just form completions.
+This is the best early North Star because the product is not meant to be a daily habit. A founder or engineering manager may only run an AI spend audit once a quarter, so metrics like DAU would reward the wrong behavior. The real value is whether the tool finds believable savings that a user would consider acting on. "Verified" matters because inflated savings would create short-term excitement but damage trust and produce poor Credex leads.
 
 ## Input Metrics
 
-1. Audit completion rate
-2. Email capture rate after results
-3. Share-link creation rate
+1. Audit completion rate: percentage of visitors who finish the form and see results.
+2. Email capture rate after results: percentage of completed audits that turn into reachable leads.
+3. High-savings rate: percentage of completed audits with estimated savings above $500/month.
 
-## Quality Metrics
+These inputs map directly to the business funnel. Completion proves the form is not too painful. Email capture proves the result is credible enough to trade contact information for follow-up. High-savings rate shows whether the product is reaching teams with a real Credex-shaped problem.
 
-- Percentage of audits with at least one recommendation
-- Percentage of recommendations accepted after manual review
-- Average estimated savings per completed audit
-- Consultation CTA click rate for audits above $500/month savings
+## What I Would Instrument First
 
-## Pivot Triggers
+I would instrument page visit, audit started, tool selected, audit completed, summary generated, email submitted, share link created, and Credex CTA clicked. I would also store non-private aggregate fields such as team size range, primary use case, tool count, total spend band, and estimated savings band. That would show where users drop off and which stacks create qualified opportunities without exposing sensitive company details.
 
-- If audit completion is below 40%, shorten the form or add pricing defaults.
-- If email capture is below 10%, improve result credibility and CTA copy.
-- If most audits show $0 savings, expand rules beyond plan/tier mismatches into inactive seats and duplicate-tool detection.
-- If users create share links but do not request consultations, reposition the product around reporting instead of services.
+## Pivot Trigger
+
+If 100 completed audits produce fewer than 10 email captures or fewer than 5 high-savings opportunities, I would revisit positioning and targeting. That would suggest either the form is not earning enough trust, the traffic is too broad, or the rules are not finding savings that feel meaningful. If completion is below 40%, I would shorten the form and add pricing defaults before changing the core idea.
